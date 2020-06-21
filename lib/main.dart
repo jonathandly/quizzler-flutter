@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'quiz_brain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(Quizzler());
 
@@ -25,6 +28,19 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> scoreKeeper = [];
+
+//  List<String> questions = [
+//    'You can lead a cow down stairs but not up stairs.',
+//    'Approximately one quarter of human bones are in the feet.',
+//    'A slug\'s blood is green.',
+//  ];
+//
+//  List<bool> answers = [false, true, true];
+//
+//  Question q1 = Question(
+//      q: 'You can lead a cow down stairs but not up stairs.', a: false);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +53,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -62,6 +78,15 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 // The user picked true.
+                bool correctAnswer = quizBrain.getCorrectAnswer();
+                if (correctAnswer == true) {
+                  print('user got it right!');
+                } else {
+                  print('user got it wrong!');
+                }
+                setState(() {
+                  quizBrain.nextQuestion();
+                });
               },
             ),
           ),
@@ -80,11 +105,23 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 // The user picked false.
+                bool correctAnswer = quizBrain.getCorrectAnswer();
+
+                if (correctAnswer == false) {
+                  print('user got it right!');
+                } else {
+                  print('user got it wrong!');
+                }
+                setState(() {
+                  quizBrain.nextQuestion();
+                });
               },
             ),
           ),
         ),
-        // TODO: Add a Row here as your score keeper.
+        Row(
+          children: scoreKeeper,
+        ),
       ],
     );
   }
