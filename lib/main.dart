@@ -30,16 +30,18 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-//  List<String> questions = [
-//    'You can lead a cow down stairs but not up stairs.',
-//    'Approximately one quarter of human bones are in the feet.',
-//    'A slug\'s blood is green.',
-//  ];
-//
-//  List<bool> answers = [false, true, true];
-//
-//  Question q1 = Question(
-//      q: 'You can lead a cow down stairs but not up stairs.', a: false);
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getCorrectAnswer();
+
+    setState(() {
+      if (userPickedAnswer == correctAnswer) {
+        scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+      } else {
+        scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+      }
+      quizBrain.nextQuestion();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,15 +80,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 // The user picked true.
-                bool correctAnswer = quizBrain.getCorrectAnswer();
-                if (correctAnswer == true) {
-                  print('user got it right!');
-                } else {
-                  print('user got it wrong!');
-                }
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(true);
               },
             ),
           ),
@@ -105,16 +99,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 // The user picked false.
-                bool correctAnswer = quizBrain.getCorrectAnswer();
-
-                if (correctAnswer == false) {
-                  print('user got it right!');
-                } else {
-                  print('user got it wrong!');
-                }
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(false);
               },
             ),
           ),
